@@ -34,7 +34,7 @@ if (a.upper()=='S'):
         countcapt=3
         j=randomString()
         print ("Please Enter this Captcha for Human Verification-->",j)
-        
+        security='NO'
         for i in range(countcapt):
             g=str(input('Enter The Text Displayed Above:'))
             if g==j:
