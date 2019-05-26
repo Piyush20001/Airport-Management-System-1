@@ -8,7 +8,7 @@ def randomString(stringLength=6):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(stringLength))
 
-print('Welcome To INDIRA GANDHI INTERNATIONAL AIRPORT')
+print('Welcome To INDIRA GHANDHI INTERNATIONAL AIRPORT')
 print('Enter P for Passengers')
 print('Enter S for Security Personnal')
 print('Enter E to Exit')
@@ -46,20 +46,30 @@ if (a.upper()=='S'):
         else:
             print('Wrong Captcha Entered multiple Times Try Again later')
         if security=='OK':
-            print('Please Enter Your Password:')
-            c=str(input(':'))
+           
             passw='last2012'
             count=5
             for i in range(1,count+1):
-                    if c==passw:
+                 print('Please Enter Your Password:')
+                 c=str(input(':'))
+                 if c==passw:
                         print('Password Correct Security Mode Activated')
                         break
-                    elif c!=passw:
-                         if count==0:
+                 elif c!=passw:
+                     count-=1
+                     if count==0:
                               print('You Have Exhausted Your chances.Please Contact the Nearest Station for Help')  
                               break
-                         count-=1
-                         print('Password Incorrect You have',count,'Chances left Try Again' )  
+                         
+                     print('Password Incorrect You have',count,'Chances left Try Again' )
+                       
+                     
+                
+                     
+                        
+                    
+                
+                     
             
               
                
