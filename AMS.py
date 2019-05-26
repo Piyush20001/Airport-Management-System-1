@@ -8,7 +8,7 @@ def randomString(stringLength=6):
     letters = string.ascii_lowercase
     return ''.join(random.choice(letters) for i in range(stringLength))
 
-print('Welcome To INDIRA GHANDHI INTERNATIONAL AIRPORT')
+print('Welcome To INDIRA GANDHI INTERNATIONAL AIRPORT')
 print('Enter P for Passengers')
 print('Enter S for Security Personnal')
 print('Enter E to Exit')
