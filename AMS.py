@@ -1,11 +1,10 @@
 
 import random
-import string
 import mysql.connector
 
 def randomString(stringLength=6):
-    letters = string.ascii_lowercase
-    return ''.join(random.choice(letters) for i in range(stringLength))
+    a=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    return ''.join(random.choice(a) for i in range(stringLength))
 
 print('Welcome To INDIRA GHANDHI INTERNATIONAL AIRPORT')
 print('Enter P for Passengers')
@@ -60,16 +59,5 @@ if (a.upper()=='S'):
                               print('You Have Exhausted Your chances.Please Contact the Nearest Station for Help')  
                               break
                          
-                     print('Password Incorrect You have',count,'Chances left Try Again' )
-                       
-                     
-                
-                     
-                        
+                     print('Password Incorrect You have',count,'Chances left Try Again')
                     
-                
-                     
-            
-              
-               
-        
