@@ -38,10 +38,10 @@ def checkin():
     r4=random.randint(0,1)
     c=status[r4]
     return c    
-database1=input('Please enter the name of the MySQL database you will be using')
-password1=input('Please enter the the password for your MySQL server')
-flights1=input('Please enter the name of the table that stores flight details')
-passengers1=input('Please enter the name of the table that stores passenger details')
+database1=input('Please Enter The Name of the MySQL database you will be using:')
+password1=input('Please Enter The the password for your MySQL server:')
+flights1=input('Please Enter The name of the table that stores flight details:')
+passengers1=input('Please Enter The name of the table that stores passenger detail:s')
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 #Flights table generator
