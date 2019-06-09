@@ -41,7 +41,7 @@ def checkin():
 database1=input('Please Enter The Name of the MySQL database you will be using:')
 password1=input('Please Enter The the password for your MySQL server:')
 flights1=input('Please Enter The name of the table that stores flight details:')
-passengers1=input('Please Enter The name of the table that stores passenger detail:s')
+passengers1=input('Please Enter The name of the table that stores passenger details:')
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 #Flights table generator
@@ -168,7 +168,7 @@ def randomString(stringLength=6):
     a=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     return ''.join(random.choice(a) for i in range(stringLength))
 
-print('Welcome To INDIRA GHANDHI INTERNATIONAL AIRPORT✈ ')
+print('Welcome To INDIRA GANDHI INTERNATIONAL AIRPORT✈ ')
 print('Enter P for Passengers')
 print('Enter S for Security Personnal')
 print('Enter E to Exit')
