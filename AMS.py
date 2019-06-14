@@ -38,10 +38,8 @@ def checkin():
     r4=random.randint(0,1)
     c=status[r4]
     return c    
-database1=input('Please Enter The Name of the MySQL database you will be using:')
-password1=input('Please Enter The the password for your MySQL server:')
-flights1=input('Please Enter The name of the table that stores flight details:')
-passengers1=input('Please Enter The name of the table that stores passenger details:')
+database1=input('Please enter the name of the MySQL database you will be using')
+password1=input('Please enter the the password for your MySQL server')
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 #Flights table generator
@@ -57,14 +55,20 @@ airlines={'New_Delhi':'Air_India','Sydney':'Quantas','New_York':'United_Airlines
 mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
 mycursor=mydb.cursor()
 
+flight_creation='create table flights (flight_number char(4) not null primary key,flight_name varchar(20),source_airport varchar(30) not null,destination_airport varchar(20) not null,departure_time time not null,connecting_flight char(3) not null)'
+passenger_creation=('create table passengers (PNR char(6) not null primary key,First_name varchar(10),Last_name varchar(10),FLight_no char(4) not null,checkin_status varchar(10) default "Pending");')
+mycursor.execute('drop table if exists flights')
+mycursor.execute('drop table if exists pasengers')
+mycursor.execute(passenger_creation)
+mycursor.execute(flight_creation)
 #To erase any previously existing data in the table
-delete=('delete from '+flights1)
+delete=('delete from flights')
 mycursor.execute(delete)
 
 #Inserting data into MySQL
 flightnumbers=[]
 for i in range(5):
-    query=('insert into '+flights1+' values(%s,%s,%s,%s,%s,%s)')
+    query=('insert into flights values(%s,%s,%s,%s,%s,%s)')
     fnum=flight_no()
     flightnumbers.append(fnum)
     r=random.randint(0,len(depart)-1)
@@ -102,13 +106,13 @@ except:
     print('Unable to establish SQL connection, make sure password and database details are correct')
 
 #To erase any previously existing data in the table
-delete=('delete from '+passengers1)
+delete=('delete from passengers')
 mycursor.execute(delete)
 
 #Inserting data into MySQL
 nkey=random.randint(20,41)
 for i in range(nkey):
-    query=('insert into '+passengers1+' value(%s,%s,%s,%s,%s)')
+    query=('insert into passengers value(%s,%s,%s,%s,%s)')
     fkey=random.randint(0,40)
     lkey=random.randint(0,40)
     tup=(id_generator(),first_names[fkey],last_names[lkey],passengerflight(),checkin())
@@ -117,7 +121,7 @@ mydb.commit()
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 #Seats table generator
 
-select_query='select flight_number,flight_name from '+flights1
+select_query='select flight_number,flight_name from flights'
 mycursor.execute(select_query)
 records = mycursor.fetchall()
 flight_numbers=[]
@@ -161,65 +165,3 @@ if delete=='Y' or delete=='y':
         mycursor.execute(delete_query2)
     
 mydb.commit()
-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-#Menu starts here
-
-def randomString(stringLength=6):
-    a=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
-    return ''.join(random.choice(a) for i in range(stringLength))
-
-print('Welcome To INDIRA GANDHI INTERNATIONAL AIRPORT✈ ')
-print('Enter P for Passengers')
-print('Enter S for Security Personnal')
-print('Enter E to Exit')
-a=input('Enter Your Choice:')
-if (a.upper()=='P'):
-  print('Enter W for Web Checking')
-  print('Enter B for Booking Tickets')
-  print('Enter D for Departures AND Arrivals')
-  b=input('Enter Your Choice:')
-  if (b.upper()=='B'):
-      print('put function for booking of mysql for booking here')
-  if (b.upper()=='W'):
-       pnr = input("Enter your PNR number: ")
-       name = (input("Enter your Last name: ")).upper()
-       print('funtion for doing web checking with mysql')
-        #function for web checking with mysql here
-  elif (b.upper()=='D'):
-        print('put function for displaying arrivals and departures from table here')
-                 #function for displaying departures           
-  else:
-        print('Wrong command')      
-if (a.upper()=='S'):
-        countcapt=3
-        j=randomString()
-        print ("Please Enter this Captcha for Human Verification-->",j)
-        security='NO'
-        for i in range(countcapt):
-            g=str(input('Enter The Text Displayed Above:'))
-            if g==j:
-               print('Correct Captcha Verification done ✓')
-               security='OK'
-               break
-            else:
-                print('Wrong Captcha Try Again') 
-        else:
-            print('Wrong Captcha Entered multiple Times Try Again later')
-        if security=='OK':
-           
-            passw='last2012'
-            count=5
-            for i in range(1,count+1):
-                 print('Please Enter Your Password:')
-                 c=str(input(':'))
-                 if c==passw:
-                        print('Password Correct Security Mode Activated')
-                        break
-                 elif c!=passw:
-                     count-=1
-                     if count==0:
-                              print('You Have Exhausted Your chances.Please Contact the Nearest Station for Help')  
-                              break
-                         
-                     print('Password Incorrect You have',count,'Chances left Try Again')
-                    
