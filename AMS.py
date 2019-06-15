@@ -38,8 +38,8 @@ def checkin():
     r4=random.randint(0,1)
     c=status[r4]
     return c    
-database1=input('Please enter the name of the MySQL database you will be using')
-password1=input('Please enter the the password for your MySQL server')
+database1=input('Please enter the name of the MySQL database you will be using:')
+password1=input('Please enter the the password for your MySQL server:')
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 #Flights table generator
@@ -164,3 +164,102 @@ if delete=='Y' or delete=='y':
         mycursor.execute(delete_query2)
     
 mydb.commit()
+#MENU STARTS HERE 
+try:
+    mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+    mycursor=mydb.cursor()
+except:
+    print('Unable to establish SQL connection, make sure password and database details are correct')
+def randomString(stringLength=6):
+    a=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+    return ''.join(random.choice(a) for i in range(stringLength))
+
+print('Welcome To INTERNATIONAL AIRPORT✈ ')
+print('Enter P for Passengers')
+print('Enter S for Security Personnal')
+print('Enter E to Exit')
+a=input('Enter Your Choice:')
+if (a.upper()=='P'):
+  print('Enter W for Web Checking')
+  print('Enter B for Booking Tickets')
+  print('Enter D for Departures AND Arrivals')
+  b=input('Enter Your Choice:')
+  if (b.upper()=='B'):
+      print('put function for booking of mysql for booking here')
+  if (b.upper()=='W'):
+       pnr = input("Enter your PNR number: ")
+       name = (input("Enter your Last name: ")).upper()
+       print('funtion for doing web checking with mysql')
+        #function for web checking with mysql here
+  elif (b.upper()=='D'):
+        print('put function for displaying arrivals and departures from table here')
+                 #function for displaying departures           
+  else:
+        print('Wrong command')      
+if (a.upper()=='S'):
+        countcapt=3
+        j=randomString()
+        print ("Please Enter this Captcha for Human Verification-->",j)
+        security='NO'
+        for i in range(countcapt):
+            g=str(input('Enter The Text Displayed Above:'))
+            if g==j:
+               print('Correct Captcha Verification done ✓')
+               security='OK'
+               break
+            else:
+                print('Wrong Captcha Try Again') 
+        else:
+            print('Wrong Captcha Entered multiple Times Try Again later')
+        if security=='OK':
+           
+            passw='last2012'
+            mode='user'
+            count=5
+            for i in range(1,count+1):
+                 print('Please Enter Your Password:')
+                 c=str(input(':'))
+                 if c==passw:
+                        print('Password Correct Security Mode Activated 🔓')
+                        mode='true'
+                        break
+                 elif c!=passw:
+                     count-=1
+                     if count==0:
+                              print('You Have Exhausted Your chances.Please Contact the Nearest Station for Help 🔒')  
+                              break         
+                     print('Password Incorrect You have',count,'Chances left Try Again')
+            if mode=='true':
+                 print("")   
+                 print('Airport Security Terminal🛡')
+                 print("")
+                 print("Enter ad for Today's Arrival and Departure.")
+                 print("")
+                 print('Enter search to Find a specific Passenger.')
+                 print("")
+                 print('Enter your command')
+                 g=str(input(':'))
+                 if (g.upper()=='AD'):
+                    import mysql.connector
+                    from tabulate import tabulate
+                    mydb=mysql.connector.connect(host='localhost',user='root',passwd='admin',database='airport3')
+                    mycursor=mydb.cursor()
+                    sql = ("SELECT * FROM flights")
+                    mycursor.execute(sql)
+                    results = mycursor.fetchall()
+                    print(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))
+                 elif (g.upper()=='SEARCH'):
+                     import mysql.connector
+                     mydb=mysql.connector.connect(host='localhost',user='root',passwd='admin',database='airport3')
+                     h=str(input('Enter First Name:'))
+                     c=str(input('Enter Sir Name:'))
+                     mycursor=mydb.cursor()
+                     fname=[h]
+                     sql2=("""SELECT * FROM passengers where First_name=r{0})""".format(h)) #STILL DOESNT WORK WORKING ON IT
+                     mycursor.execute(sql2)
+                     result=mycursor.fetchall()
+                     mydb.commit
+                     mycursor.close
+                     for row in result:
+                         print(row)
+      
