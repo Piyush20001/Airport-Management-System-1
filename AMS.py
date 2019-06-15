@@ -57,8 +57,8 @@ mycursor=mydb.cursor()
 
 flight_creation='create table flights (flight_number char(4) not null primary key,flight_name varchar(20),source_airport varchar(30) not null,destination_airport varchar(20) not null,departure_time time not null,connecting_flight char(3) not null)'
 passenger_creation=('create table passengers (PNR char(6) not null primary key,First_name varchar(10),Last_name varchar(10),FLight_no char(4) not null,checkin_status varchar(10) default "Pending");')
-mycursor.execute('drop table if exists flights')
-mycursor.execute('drop table if exists pasengers')
+mycursor.execute('drop table if exists database1.flights')
+mycursor.execute('drop table if exists database1.passengers')
 mycursor.execute(passenger_creation)
 mycursor.execute(flight_creation)
 #To erase any previously existing data in the table
