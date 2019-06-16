@@ -232,6 +232,14 @@ if (a.upper()=='S'):
             if mode=='true':
                  print("")   
                  print('Airport Security Terminal🛡')
+                 import time
+                 import sys
+                 animation = "|/-\\"
+                 for i in range(30):
+                     time.sleep(0.1)
+                     sys.stdout.write("\r" + animation[i % len(animation)])
+                     sys.stdout.flush()
+                 print('\rTerminal Loaded')
                  print("")
                  print("Enter ad for Today's Arrival and Departure.")
                  print("")
@@ -262,4 +270,3 @@ if (a.upper()=='S'):
                      mycursor.close
                      for row in result:
                          print(row)
-      
