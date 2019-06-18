@@ -170,6 +170,9 @@ try:
     mycursor=mydb.cursor()
 except:
     print('Unable to establish SQL connection, make sure password and database details are correct')
+import random
+import mysql.connector
+
 def randomString(stringLength=6):
     a=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     return ''.join(random.choice(a) for i in range(stringLength))
@@ -187,13 +190,22 @@ if (a.upper()=='P'):
   if (b.upper()=='B'):
       print('put function for booking of mysql for booking here')
   if (b.upper()=='W'):
-       pnr = input("Enter your PNR number: ")
-       name = (input("Enter your Last name: ")).upper()
-       print('funtion for doing web checking with mysql')
-        #function for web checking with mysql here
+      mydb=mysql.connector.connect(host='localhost',user='root',passwd='admin',database='airport3')
+      mycursor=mydb.cursor()
+      h= input("Enter your PNR number: ")
+      name = (input("Enter your Last name: ")).upper()
+      sql=mycursor.execute("UPDATE passengers WHERE First_name LIKE %s", ("%" + h + "%",))
+      mycursor.execute(sql)
+      print('Web Checking Done')      
   elif (b.upper()=='D'):
-        print('put function for displaying arrivals and departures from table here')
-                 #function for displaying departures           
+        import mysql.connector
+        from tabulate import tabulate
+        mydb=mysql.connector.connect(host='localhost',user='root',passwd='admin',database='airport3')
+        mycursor=mydb.cursor()
+        sql = ("SELECT * FROM flights")
+        mycursor.execute(sql)
+        results = mycursor.fetchall()
+        print(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))        
   else:
         print('Wrong command')      
 if (a.upper()=='S'):
@@ -258,15 +270,14 @@ if (a.upper()=='S'):
                     print(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))
                  elif (g.upper()=='SEARCH'):
                      import mysql.connector
+                     from tabulate import tabulate
                      mydb=mysql.connector.connect(host='localhost',user='root',passwd='admin',database='airport3')
                      h=str(input('Enter First Name:'))
                      c=str(input('Enter Sir Name:'))
                      mycursor=mydb.cursor()
-                     fname=[h]
-                     sql2=("""SELECT * FROM passengers where First_name=r{0})""".format(h)) #STILL DOESNT WORK WORKING ON IT
+                     sql2=mycursor.execute("SELECT * FROM passengers WHERE First_name LIKE %s", ("%" + h + "%",)) #PARTIALLY WORKS
                      mycursor.execute(sql2)
-                     result=mycursor.fetchall()
-                     mydb.commit
-                     mycursor.close
-                     for row in result:
-                         print(row)
+                     results=mycursor.fetchall()
+                     print(tabulate(results, headers=['PNR','First Name','Last Name','Flight No.','Checkin Status'], tablefmt='psql'))
+                 else:
+                     print("Wrong Comannd Pls Try Again")
