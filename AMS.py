@@ -188,7 +188,13 @@ if (a.upper()=='P'):
   print('Enter D for Departures AND Arrivals')
   b=input('Enter Your Choice:')
   if (b.upper()=='B'):
-      print('put function for booking of mysql for booking here')
+      fname=input("enter your first name")
+      lname=input("enter your last name")
+      flight_num=input("enter flight number ")
+      pnr=id_generator()
+      query="insert into passengers values (%s,%s)"
+      tuple1=(pnr,fname,lname,flight_num,"Pending")
+      mydb.execute(query,tuple1)
   if (b.upper()=='W'):
       mydb=mysql.connector.connect(host='localhost',user='root',passwd='admin',database='airport3')
       mycursor=mydb.cursor()
