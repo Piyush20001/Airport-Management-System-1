@@ -38,10 +38,8 @@ def checkin():
     r4=random.randint(0,1)
     c=status[r4]
     return c    
-database1=input('Please Enter The Name of the MySQL database you will be using:')
-password1=input('Please Enter The the password for your MySQL server:')
-flights1=input('Please Enter The name of the table that stores flight details:')
-passengers1=input('Please Enter The name of the table that stores passenger details:')
+database1=input('Please enter the name of the MySQL database you will be using:')
+password1=input('Please enter the the password for your MySQL server:')
 
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 #Flights table generator
@@ -56,15 +54,20 @@ airlines={'New_Delhi':'Air_India','Sydney':'Quantas','New_York':'United_Airlines
 
 mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
 mycursor=mydb.cursor()
-
+mycursor.execute('drop table if exists flights')
+mycursor.execute('drop table if exists passengers')
+flight_creation='create table flights (flight_number char(4) not null primary key,flight_name varchar(20),source_airport varchar(30) not null,destination_airport varchar(20) not null,departure_time time not null,connecting_flight char(3) not null)'
+passenger_creation=('create table passengers (PNR char(6) not null primary key,First_name varchar(10),Last_name varchar(10),FLight_no char(4) not null,checkin_status varchar(10) default "Pending");')
+mycursor.execute(passenger_creation)
+mycursor.execute(flight_creation)
 #To erase any previously existing data in the table
-delete=('delete from '+flights1)
+delete=('delete from flights')
 mycursor.execute(delete)
 
 #Inserting data into MySQL
 flightnumbers=[]
 for i in range(5):
-    query=('insert into '+flights1+' values(%s,%s,%s,%s,%s,%s)')
+    query=('insert into flights values(%s,%s,%s,%s,%s,%s)')
     fnum=flight_no()
     flightnumbers.append(fnum)
     r=random.randint(0,len(depart)-1)
@@ -102,13 +105,13 @@ except:
     print('Unable to establish SQL connection, make sure password and database details are correct')
 
 #To erase any previously existing data in the table
-delete=('delete from '+passengers1)
+delete=('delete from passengers')
 mycursor.execute(delete)
 
 #Inserting data into MySQL
 nkey=random.randint(20,41)
 for i in range(nkey):
-    query=('insert into '+passengers1+' value(%s,%s,%s,%s,%s)')
+    query=('insert into passengers value(%s,%s,%s,%s,%s)')
     fkey=random.randint(0,40)
     lkey=random.randint(0,40)
     tup=(id_generator(),first_names[fkey],last_names[lkey],passengerflight(),checkin())
@@ -117,7 +120,7 @@ mydb.commit()
 #-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#
 #Seats table generator
 
-select_query='select flight_number,flight_name from '+flights1
+select_query='select flight_number,flight_name from flights'
 mycursor.execute(select_query)
 records = mycursor.fetchall()
 flight_numbers=[]
@@ -161,14 +164,20 @@ if delete=='Y' or delete=='y':
         mycursor.execute(delete_query2)
     
 mydb.commit()
-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-#-
-#Menu starts here
+#MENU STARTS HERE 
+try:
+    mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+    mycursor=mydb.cursor()
+except:
+    print('Unable to establish SQL connection, make sure password and database details are correct')
+import random
+import mysql.connector
 
 def randomString(stringLength=6):
     a=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     return ''.join(random.choice(a) for i in range(stringLength))
 
-print('Welcome To INDIRA GANDHI INTERNATIONAL AIRPORT✈ ')
+print('Welcome To INTERNATIONAL AIRPORT✈ ')
 print('Enter P for Passengers')
 print('Enter S for Security Personnal')
 print('Enter E to Exit')
@@ -179,15 +188,30 @@ if (a.upper()=='P'):
   print('Enter D for Departures AND Arrivals')
   b=input('Enter Your Choice:')
   if (b.upper()=='B'):
-      print('put function for booking of mysql for booking here')
+      fname=input("enter your first name")
+      lname=input("enter your last name")
+      flight_num=input("enter flight number ")
+      pnr=id_generator()
+      query="insert into passengers values (%s,%s)"
+      tuple1=(pnr,fname,lname,flight_num,"Pending")
+      mydb.execute(query,tuple1)
   if (b.upper()=='W'):
-       pnr = input("Enter your PNR number: ")
-       name = (input("Enter your Last name: ")).upper()
-       print('funtion for doing web checking with mysql')
-        #function for web checking with mysql here
+      mydb=mysql.connector.connect(host='localhost',user='root',passwd='admin',database='airport3')
+      mycursor=mydb.cursor()
+      h= input("Enter your PNR number: ")
+      name = (input("Enter your Last name: ")).upper()
+      sql=mycursor.execute("UPDATE passengers WHERE First_name LIKE %s", ("%" + h + "%",))
+      mycursor.execute(sql)
+      print('Web Checking Done')      
   elif (b.upper()=='D'):
-        print('put function for displaying arrivals and departures from table here')
-                 #function for displaying departures           
+        import mysql.connector
+        from tabulate import tabulate
+        mydb=mysql.connector.connect(host='localhost',user='root',passwd='admin',database='airport3')
+        mycursor=mydb.cursor()
+        sql = ("SELECT * FROM flights")
+        mycursor.execute(sql)
+        results = mycursor.fetchall()
+        print(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))        
   else:
         print('Wrong command')      
 if (a.upper()=='S'):
@@ -208,18 +232,58 @@ if (a.upper()=='S'):
         if security=='OK':
            
             passw='last2012'
+            mode='user'
             count=5
             for i in range(1,count+1):
                  print('Please Enter Your Password:')
                  c=str(input(':'))
                  if c==passw:
-                        print('Password Correct Security Mode Activated')
+                        print('Password Correct Security Mode Activated 🔓')
+                        mode='true'
                         break
                  elif c!=passw:
                      count-=1
                      if count==0:
-                              print('You Have Exhausted Your chances.Please Contact the Nearest Station for Help')  
-                              break
-                         
+                              print('You Have Exhausted Your chances.Please Contact the Nearest Station for Help 🔒')  
+                              break         
                      print('Password Incorrect You have',count,'Chances left Try Again')
-                    
+            if mode=='true':
+                 print("")   
+                 print('Airport Security Terminal🛡')
+                 import time
+                 import sys
+                 animation = "|/-\\"
+                 for i in range(30):
+                     time.sleep(0.1)
+                     sys.stdout.write("\r" + animation[i % len(animation)])
+                     sys.stdout.flush()
+                 print('\rTerminal Loaded')
+                 print("")
+                 print("Enter ad for Today's Arrival and Departure.")
+                 print("")
+                 print('Enter search to Find a specific Passenger.')
+                 print("")
+                 print('Enter your command')
+                 g=str(input(':'))
+                 if (g.upper()=='AD'):
+                    import mysql.connector
+                    from tabulate import tabulate
+                    mydb=mysql.connector.connect(host='localhost',user='root',passwd='admin',database='airport3')
+                    mycursor=mydb.cursor()
+                    sql = ("SELECT * FROM flights")
+                    mycursor.execute(sql)
+                    results = mycursor.fetchall()
+                    print(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))
+                 elif (g.upper()=='SEARCH'):
+                     import mysql.connector
+                     from tabulate import tabulate
+                     mydb=mysql.connector.connect(host='localhost',user='root',passwd='admin',database='airport3')
+                     h=str(input('Enter First Name:'))
+                     c=str(input('Enter Sir Name:'))
+                     mycursor=mydb.cursor()
+                     sql2=mycursor.execute("SELECT * FROM passengers WHERE First_name LIKE %s", ("%" + h + "%",)) #PARTIALLY WORKS
+                     mycursor.execute(sql2)
+                     results=mycursor.fetchall()
+                     print(tabulate(results, headers=['PNR','First Name','Last Name','Flight No.','Checkin Status'], tablefmt='psql'))
+                 else:
+                     print("Wrong Comannd Pls Try Again")
