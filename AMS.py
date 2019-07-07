@@ -183,7 +183,7 @@ print('Enter S for Security Personnal')
 print('Enter E to Exit')
 a=input('Enter Your Choice:')
 if (a.upper()=='P'):
-  print('Enter W for Web Checking')
+  print('Enter W for Web Checkin')
   print('Enter B for Booking Tickets')
   print('Enter D for Departures AND Arrivals')
   b=input('Enter Your Choice:')
@@ -192,7 +192,7 @@ if (a.upper()=='P'):
       lname=input("enter your last name")
       flight_num=input("enter flight number ")
       pnr=id_generator()
-      query="insert into passengers values (%s,%s)"
+      query="insert into passengers values (%s,%s,%s,%s,%s)"
       tuple1=(pnr,fname,lname,flight_num,"Pending")
       mydb.execute(query,tuple1)
   if (b.upper()=='W'):
@@ -202,7 +202,7 @@ if (a.upper()=='P'):
       name = (input("Enter your Last name: ")).upper()
       sql=mycursor.execute("UPDATE passengers WHERE First_name LIKE %s", ("%" + h + "%",))
       mycursor.execute(sql)
-      print('Web Checking Done')      
+      print('Web Checkin Done')      
   elif (b.upper()=='D'):
         import mysql.connector
         from tabulate import tabulate
