@@ -156,12 +156,7 @@ for book2 in booking_tables:
             z='insert into '+book2+' values(%s,%s,%s)'
             vals=(seatno(seat,kk),seats1[seat],status())
             mycursor.execute(z,vals)
-#Temporary delete function, will update when alen finishes his work
-delete=input('Would you like to delete the seat tables now?(Y/N)')
-if delete=='Y' or delete=='y':
-    for book3 in booking_tables:
-        delete_query2='Drop table '+book3
-        mycursor.execute(delete_query2)
+
     
 mydb.commit()
 #MENU STARTS HERE 
@@ -176,114 +171,134 @@ import mysql.connector
 def randomString(stringLength=6):
     a=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     return ''.join(random.choice(a) for i in range(stringLength))
-
-print('Welcome To INTERNATIONAL AIRPORT✈ ')
-print('Enter P for Passengers')
-print('Enter S for Security Personnal')
-print('Enter E to Exit')
-a=input('Enter Your Choice:')
-if (a.upper()=='P'):
-  print('Enter W for Web Checkin')
-  print('Enter B for Booking Tickets')
-  print('Enter D for Departures AND Arrivals')
-  b=input('Enter Your Choice:')
-  if (b.upper()=='B'):
-      fname=input("enter your first name")
-      lname=input("enter your last name")
-      flight_num=input("enter flight number ")
-      pnr=id_generator()
-      query="insert into passengers values (%s,%s,%s,%s,%s)"
-      tuple1=(pnr,fname,lname,flight_num,"Pending")
-      mydb.execute(query,tuple1)
-  if (b.upper()=='W'):
-      mydb=mysql.connector.connect(host='localhost',user='root',passwd='admin',database='airport3')
-      mycursor=mydb.cursor()
-      h= input("Enter your PNR number: ")
-      name = (input("Enter your Last name: ")).upper()
-      sql=mycursor.execute("UPDATE passengers WHERE First_name LIKE %s", ("%" + h + "%",))
-      mycursor.execute(sql)
-      print('Web Checkin Done')      
-  elif (b.upper()=='D'):
-        import mysql.connector
-        from tabulate import tabulate
-        mydb=mysql.connector.connect(host='localhost',user='root',passwd='admin',database='airport3')
-        mycursor=mydb.cursor()
-        sql = ("SELECT * FROM flights")
-        mycursor.execute(sql)
-        results = mycursor.fetchall()
-        print(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))        
-  else:
-        print('Wrong command')      
-if (a.upper()=='S'):
-        countcapt=3
-        j=randomString()
-        print ("Please Enter this Captcha for Human Verification-->",j)
-        security='NO'
-        for i in range(countcapt):
-            g=str(input('Enter The Text Displayed Above:'))
-            if g==j:
-               print('Correct Captcha Verification done ✓')
-               security='OK'
-               break
+while True:
+    print('Welcome To INTERNATIONAL AIRPORT✈ ')
+    print('Enter P for Passengers')
+    print('Enter S for Security Personnal')
+    print('Enter E to Exit')
+    a=input('Enter Your Choice:')
+    if (a.upper()=='P'):
+      print('Enter W for Web Checkin')
+      print('Enter B for Booking Tickets')
+      print('Enter D for Departures AND Arrivals')
+      b=input('Enter Your Choice:')
+      if (b.upper()=='B'):
+          mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+          mycursor=mydb.cursor()
+          fname=input("enter your first name")
+          lname=input("enter your last name")
+          question=input('Would you like to view arrivals and departures?(Y/N)')
+          if question == 'Y':
+              sql = ("SELECT * FROM flights")
+              mycursor.execute(sql)
+              results = mycursor.fetchall()
+              print(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))
+              mydb.commit()
+          flight_num=input("enter flight number")
+          pnr=id_generator()
+          query="insert into passengers values (%s,%s,%s,%s,%s)"
+          tuple1=(pnr,fname,lname,flight_num,"Pending")
+          mycursor.execute(query,tuple1)
+          print('Your flight details are: PNR: ',pnr,',first name: ',fname,',last name: ',lname,' ,flight number: ',flight_num,'\n Please keep these handy')
+      if (b.upper()=='W'):
+          mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+          mycursor=mydb.cursor()
+          h= input("Enter your PNR number: ")
+          h2=(h,)
+          sql=("UPDATE passengers set checkin_status='completed' where pnr = %s")
+          mycursor.execute(sql,h2)
+          mydb.commit()
+          print('Web Checkin Done')      
+      elif (b.upper()=='D'):
+            import mysql.connector
+            from tabulate import tabulate
+            mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+            mycursor=mydb.cursor()
+            sql = ("SELECT * FROM flights")
+            mycursor.execute(sql)
+            results = mycursor.fetchall()
+            print(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))        
+      else:
+            print('Wrong command')      
+    if (a.upper()=='S'):
+            countcapt=3
+            j=randomString()
+            print ("Please Enter this Captcha for Human Verification-->",j)
+            security='NO'
+            for i in range(countcapt):
+                g=str(input('Enter The Text Displayed Above:'))
+                if g==j:
+                   print('Correct Captcha Verification done ✓')
+                   security='OK'
+                   break
+                else:
+                    print('Wrong Captcha Try Again') 
             else:
-                print('Wrong Captcha Try Again') 
-        else:
-            print('Wrong Captcha Entered multiple Times Try Again later')
-        if security=='OK':
-           
-            passw='last2012'
-            mode='user'
-            count=5
-            for i in range(1,count+1):
-                 print('Please Enter Your Password:')
-                 c=str(input(':'))
-                 if c==passw:
-                        print('Password Correct Security Mode Activated 🔓')
-                        mode='true'
-                        break
-                 elif c!=passw:
-                     count-=1
-                     if count==0:
-                              print('You Have Exhausted Your chances.Please Contact the Nearest Station for Help 🔒')  
-                              break         
-                     print('Password Incorrect You have',count,'Chances left Try Again')
-            if mode=='true':
-                 print("")   
-                 print('Airport Security Terminal🛡')
-                 import time
-                 import sys
-                 animation = "|/-\\"
-                 for i in range(30):
-                     time.sleep(0.1)
-                     sys.stdout.write("\r" + animation[i % len(animation)])
-                     sys.stdout.flush()
-                 print('\rTerminal Loaded')
-                 print("")
-                 print("Enter ad for Today's Arrival and Departure.")
-                 print("")
-                 print('Enter search to Find a specific Passenger.')
-                 print("")
-                 print('Enter your command')
-                 g=str(input(':'))
-                 if (g.upper()=='AD'):
-                    import mysql.connector
-                    from tabulate import tabulate
-                    mydb=mysql.connector.connect(host='localhost',user='root',passwd='admin',database='airport3')
-                    mycursor=mydb.cursor()
-                    sql = ("SELECT * FROM flights")
-                    mycursor.execute(sql)
-                    results = mycursor.fetchall()
-                    print(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))
-                 elif (g.upper()=='SEARCH'):
-                     import mysql.connector
-                     from tabulate import tabulate
-                     mydb=mysql.connector.connect(host='localhost',user='root',passwd='admin',database='airport3')
-                     h=str(input('Enter First Name:'))
-                     c=str(input('Enter Sir Name:'))
-                     mycursor=mydb.cursor()
-                     sql2=mycursor.execute("SELECT * FROM passengers WHERE First_name LIKE %s", ("%" + h + "%",)) #PARTIALLY WORKS
-                     mycursor.execute(sql2)
-                     results=mycursor.fetchall()
-                     print(tabulate(results, headers=['PNR','First Name','Last Name','Flight No.','Checkin Status'], tablefmt='psql'))
-                 else:
-                     print("Wrong Comannd Pls Try Again")
+                print('Wrong Captcha Entered multiple Times Try Again later')
+            if security=='OK':
+               
+                passw='last2012'
+                mode='user'
+                count=5
+                for i in range(1,count+1):
+                     print('Please Enter Your Password:')
+                     c=str(input(':'))
+                     if c==passw:
+                            print('Password Correct Security Mode Activated 🔓')
+                            mode='true'
+                            break
+                     elif c!=passw:
+                         count-=1
+                         if count==0:
+                                  print('You Have Exhausted Your chances.Please Contact the Nearest Station for Help 🔒')  
+                                  break         
+                         print('Password Incorrect You have',count,'Chances left Try Again')
+                if mode=='true':
+                     print("")   
+                     print('Airport Security Terminal🛡')
+                     import time
+                     import sys
+                     animation = "|/-\\"
+                     for i in range(30):
+                         time.sleep(0.1)
+                         sys.stdout.write("\r" + animation[i % len(animation)])
+                         sys.stdout.flush()
+                     print('\rTerminal Loaded')
+                     print("")
+                     print("Enter ad for Today's Arrival and Departure.")
+                     print("")
+                     print('Enter search to Find a specific Passenger.')
+                     print("")
+                     print('Enter your command')
+                     g=str(input(':'))
+                     if (g.upper()=='AD'):
+                        import mysql.connector
+                        from tabulate import tabulate
+                        mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+                        mycursor=mydb.cursor()
+                        sql = ("SELECT * FROM flights")
+                        mycursor.execute(sql)
+                        results = mycursor.fetchall()
+                        print(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))
+                     elif (g.upper()=='SEARCH'):
+                         import mysql.connector
+                         from tabulate import tabulate
+                         mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+                         h=str(input('Enter First Name:'))
+                         c=str(input('Enter Surname:'))
+                         mycursor=mydb.cursor()
+                         sql2=mycursor.execute("SELECT * FROM passengers WHERE First_name LIKE %s", ("%" + h + "%",)) #PARTIALLY WORKS
+                         mycursor.execute(sql2)
+                         results=mycursor.fetchall()
+                         print(tabulate(results, headers=['PNR','First Name','Last Name','Flight No.','Checkin Status'], tablefmt='psql'))
+                     else:
+                         print("Wrong Command Pls Try Again")
+    if (a.upper()=='E'):
+        break
+    
+mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+mycursor=mydb.cursor()
+for book3 in booking_tables:
+    delete_query2='Drop table '+book3
+    mycursor.execute(delete_query2)
+mydb.commit()
