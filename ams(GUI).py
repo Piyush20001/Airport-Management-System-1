@@ -175,6 +175,81 @@ def randomString(stringLength=6):
     a=['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
     return ''.join(random.choice(a) for i in range(stringLength))
 
+def AD():
+           
+            import mysql.connector
+            from tabulate import tabulate
+            mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+            mycursor=mydb.cursor()
+            sql = ("SELECT * FROM flights")
+            mycursor.execute(sql)
+            results = mycursor.fetchall()
+            x=(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))
+            adwindow=tkinter.Toplevel()
+            adwindow.title('Arrivals and Departures')
+            adwindow.geometry('400x200')
+            adwindow.configure(bg='sky blue')
+            label=tkinter.Label(adwindow,text=x).pack()
+def BT():
+    def submot():
+        fname=name.get()
+        lname=name2.get()
+        fno=z.get()
+        query="insert into passengers values (%s,%s,%s,%s,%s)"
+        tuple1=(pnr,fname,lname,fno,"Pending")
+        mycursor.execute(query,tuple1)
+        mydb.commit()
+        info='Your flight details are: PNR: ',pnr,',first name: ',fname,',last name: ',lname,' ,flight number: ',fno,'\nPlease keep these handy'
+        messagebox.showinfo('Flight Details',info)
+    import mysql.connector
+    from tabulate import tabulate
+    mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+    mycursor=mydb.cursor()
+    swindow=tkinter.Toplevel()
+    tkinter.Label(swindow,text='Enter First Name:').grid(row=1)
+    name=tkinter.Entry(swindow,font='Menlo')
+    name.grid(row=1,column=2)
+    
+    tkinter.Label(swindow,text='Enter Surname:').grid(row=2)
+    name2=tkinter.Entry(swindow,font='Menlo')
+    name2.grid(row=2,column=2)
+    
+    tkinter.Label(swindow,text='Please enter flight number:').grid(row=3)
+    z=tkinter.Entry(swindow,font='Menlo')
+    z.grid(row=3,column=2)
+    pnr=id_generator()
+    tkinter.Button(swindow,text='Submit',width=5,height=1,command=submot).grid(row=3, column=1)
+    
+def WC():
+    def submot2():
+        name4=name3.get()
+        h2=(name4,)
+        sql=("UPDATE passengers set checkin_status='completed' where pnr = %s")
+        mycursor.execute(sql,h2)
+        mydb.commit()
+        messagebox.showinfo('Alert','Check-in succesfully done.')
+        
+    mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+    mycursor=mydb.cursor()
+    pwindow=tkinter.Toplevel()
+    tkinter.Label(pwindow,text='Enter PNR Number:').grid(row=1)
+    name3=tkinter.Entry(pwindow,font='Menlo')
+    name3.grid(row=1,column=2)
+    tkinter.Button(pwindow,text='Submit',width=5,height=1,command=submot2).grid(row=2, column=2)
+    
+    
+
+def civilians():
+    passengers1=tkinter.Toplevel()
+    passengers1.title('Passenger Window')
+    passengers1.geometry('900x700')
+    passengers1.configure(bg='sky blue')
+    label=tkinter.Label(passengers1,text='Passengers',font='Menlo 50',bg='Sky Blue',bd=10 ,fg='Black').place(x=160,y=10)
+    ad=tkinter.Button(passengers1,text='Arrivals and Departures',width=50,height=1,font='Terminal 20',command=AD).place(x=10,y=200)
+    wc=tkinter.Button(passengers1,text='Web Check-in',width=50,height=1,font='Terminal 20',command=WC).place(x=10,y=350)
+    bt=tkinter.Button(passengers1,text='Booking Tickets',width=50,height=1,font='Terminal 20',command=BT).place(x=10,y=500)
+        
+
 def protection():
     def protection_command():
         def search():
@@ -214,22 +289,22 @@ def protection():
             
             
            
-           
-        def AD():
-           
+        def p_list():
             import mysql.connector
             from tabulate import tabulate
             mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
             mycursor=mydb.cursor()
-            sql = ("SELECT * FROM flights")
+            sql = ("SELECT * FROM passengers")
             mycursor.execute(sql)
             results = mycursor.fetchall()
-            x=(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))
+            x=(tabulate(results, headers=['PNR','First Name','Last Name','Flight Number','Check-in Status'], tablefmt='psql'))
             adwindow=tkinter.Toplevel()
-            adwindow.title('Arrivals and Departures')
+            adwindow.title('Passengers')
             adwindow.geometry('400x200')
-            adwindow.configure(bg='sky blue')
+            adwindow.configure(bg='white')
             label=tkinter.Label(adwindow,text=x).pack()
+            
+        
         passw=e.get()
         if passw=='last2012':
             security=tkinter.Toplevel()
@@ -240,7 +315,7 @@ def protection():
             label=tkinter.Label(security,text='A͢i͢r͢p͢o͢r͢t͢ ͢P͢e͢r͢s͢o͢n͢n͢e͢l͢',font='Menlo 50',bg='Sky Blue',bd=10 ,fg='Black').place(x=160,y=10)
             ad=tkinter.Button(security,text='Arrivals and Departures',width=50,height=1,font='Terminal 20',command=AD).place(x=10,y=200)
             search=tkinter.Button(security,text='Search For A Passenger',width=50,height=1,font='Terminal 20',command=search).place(x=10,y=350)
-            list_p=tkinter.Button(security,text='List of Passengers',width=50,height=1,font='Terminal 20').place(x=10,y=500)
+            list_p=tkinter.Button(security,text='List of Passengers',width=50,height=1,font='Terminal 20',command=p_list).place(x=10,y=500)
         
         else:
             messagebox.showerror("Incorrect Password", "The password you have entered is incorrect")
@@ -257,129 +332,14 @@ window.title('Airport Management System')
 window.geometry('900x700')
 window.configure(bg='sky blue')
 label=tkinter.Label(window,text='A͢i͢r͢p͢o͢r͢t͢ ͢M͢a͢n͢a͢g͢e͢m͢e͢n͢t͢ ͢S͢y͢s͢t͢e͢m͢',font='Menlo 50',bg='Sky Blue',bd=10 ,fg='Black').place(x=10,y=10)
-passen=tkinter.Button(window,text='Passenger',width=20,height=5,font='Courier 30').place(x=200,y=150)
+passen=tkinter.Button(window,text='Passenger',width=20,height=5,font='Courier 30',command=civilians).place(x=200,y=150)
 security=tkinter.Button(window,text='Airport Personnel',width=20,height=5,font='Courier 30',command=protection).place(x=200,y=400)
 
 window.mainloop()
-'''Passenger
-if (b.upper()=='B'):
-  mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
-  mycursor=mydb.cursor()
-  fname=input("enter your first name")
-  lname=input("enter your last name")
-  question=input('Would you like to view arrivals and departures?(Y/N)')
-  if question == 'Y':
-      sql = ("SELECT * FROM flights")
-      mycursor.execute(sql)
-      results = mycursor.fetchall()
-      print(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))
-      mydb.commit()
-      flight_num=input("enter flight number")
-      pnr=id_generator()
-      query="insert into passengers values (%s,%s,%s,%s,%s)"
-      tuple1=(pnr,fname,lname,flight_num,"Pending")
-      mycursor.execute(query,tuple1)
-      print('Your flight details are: PNR: ',pnr,',first name: ',fname,',last name: ',lname,' ,flight number: ',flight_num,'\n Please keep these handy')
-if (b.upper()=='W'):
-    mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
-    mycursor=mydb.cursor()
-    h= input("Enter your PNR number: ")
-    h2=(h,)
-    sql=("UPDATE passengers set checkin_status='completed' where pnr = %s")
-    mycursor.execute(sql,h2)
-    mydb.commit()
-    print('Web Checkin Done')      
-elif (b.upper()=='D'):
-    import mysql.connector
-    from tabulate import tabulate
-    mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
-    mycursor=mydb.cursor()
-    sql = ("SELECT * FROM flights")
-    mycursor.execute(sql)
-    results = mycursor.fetchall()
-    print(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))        
-else:
-    print('Wrong command') 
-if (a.upper()=='S'):
-        countcapt=3
-        j=randomString()
-        print ("Please Enter this Captcha for Human Verification-->",j)
-        security='NO'
-        for i in range(countcapt):
-            g=str(input('Enter The Text Displayed Above:'))
-            if g==j:
-               print('Correct Captcha Verification done ✓')
-               security='OK'
-               break
-            else:
-                print('Wrong Captcha Try Again') 
-        else:
-            print('Wrong Captcha Entered multiple Times Try Again later')
-        if security=='OK':
-           
-            passw='last2012'
-            mode='user'
-            count=5
-            for i in range(1,count+1):
-                 print('Please Enter Your Password:')
-                 c=str(input(':'))
-                 if c==passw:
-                        print('Password Correct Security Mode Activated 🔓')
-                        mode='true'
-                        break
-                 elif c!=passw:
-                     count-=1
-                     if count==0:
-                              print('You Have Exhausted Your chances.Please Contact the Nearest Station for Help 🔒')  
-                              break         
-                     print('Password Incorrect You have',count,'Chances left Try Again')
-            if mode=='true':
-                 print("")   
-                 print('Airport Security Terminal🛡')
-                 import time
-                 import sys
-                 animation = "|/-\\"
-                 for i in range(30):
-                     time.sleep(0.1)
-                     sys.stdout.write("\r" + animation[i % len(animation)])
-                     sys.stdout.flush()
-                 print('\rTerminal Loaded')
-                 print("")
-                 print("Enter ad for Today's Arrival and Departure.")
-                 print("")
-                 print('Enter search to Find a specific Passenger.')
-                 print("")
-                 print('Enter your command')
-                 g=str(input(':'))
-                 if (g.upper()=='AD'):
-                    import mysql.connector
-                    from tabulate import tabulate
-                    mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
-                    mycursor=mydb.cursor()
-                    sql = ("SELECT * FROM flights")
-                    mycursor.execute(sql)
-                    results = mycursor.fetchall()
-                    return(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))
-                 elif (g.upper()=='SEARCH'):
-                     import mysql.connector
-                     from tabulate import tabulate
-                     mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
-                     h=str(input('Enter First Name:'))
-                     c=str(input('Enter Surname:'))
-                     mycursor=mydb.cursor()
-                     sql2=mycursor.execute("SELECT * FROM passengers WHERE First_name LIKE %s", ("%" + h + "%",)) #PARTIALLY WORKS
-                     mycursor.execute(sql2)
-                     results=mycursor.fetchall()
-                     print(tabulate(results, headers=['PNR','First Name','Last Name','Flight No.','Checkin Status'], tablefmt='psql'))
-                 else:
-                     print("Wrong Command Pls Try Again")
-if (a.upper()=='E'):
-    break
 
 mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
 mycursor=mydb.cursor()
 for book3 in booking_tables:
-delete_query2='Drop table '+book3
+    delete_query2='Drop table '+book3
 mycursor.execute(delete_query2)
 mydb.commit()
-'''
