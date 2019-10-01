@@ -248,7 +248,19 @@ def civilians():
     ad=tkinter.Button(passengers1,text='Arrivals and Departures',width=50,height=1,font='Terminal 20',command=AD).place(x=10,y=200)
     wc=tkinter.Button(passengers1,text='Web Check-in',width=50,height=1,font='Terminal 20',command=WC).place(x=10,y=350)
     bt=tkinter.Button(passengers1,text='Booking Tickets',width=50,height=1,font='Terminal 20',command=BT).place(x=10,y=500)
-        
+
+def flight_seats():
+     import mysql.connector
+     from tabulate import tabulate
+     mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+     mycursor=mydb.cursor()
+     seater=tkinter.Toplevel()
+     seater.title('Flight Seats Status')
+     seater.geometry('600x600')
+     seater.configure(bg='sky blue')
+     f1=tkinter.Button(passengers1,text=i[0],width=50,height=1,font='Terminal 20',command=AD).place(x=10,y=200)
+         
+         
 
 def protection():
     def protection_command():
@@ -316,7 +328,7 @@ def protection():
             ad=tkinter.Button(security,text='Arrivals and Departures',width=50,height=1,font='Terminal 20',command=AD).place(x=10,y=200)
             search=tkinter.Button(security,text='Search For A Passenger',width=50,height=1,font='Terminal 20',command=search).place(x=10,y=350)
             list_p=tkinter.Button(security,text='List of Passengers',width=50,height=1,font='Terminal 20',command=p_list).place(x=10,y=500)
-        
+            list_s=tkinter.Button(security,text='FLights',width=50,height=1,font='Terminal 20',command=flight_seats).place(x=10,y=650)
         else:
             messagebox.showerror("Incorrect Password", "The password you have entered is incorrect")
             protect.destroy()
