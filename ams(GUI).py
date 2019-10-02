@@ -3,7 +3,7 @@ import mysql.connector
 import random
 import string
 import tkinter
-from tkinter import messagebox
+from tkinter import messagebox,scrolledtext
 import tabulate
 #User Defined Functions
 def flight_no():
@@ -187,9 +187,13 @@ def AD():
             x=(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))
             adwindow=tkinter.Toplevel()
             adwindow.title('Arrivals and Departures')
-            adwindow.geometry('400x200')
-            adwindow.configure(bg='sky blue')
-            label=tkinter.Label(adwindow,text=x).pack()
+            adwindow.geometry('850x150+120+120')
+            label=scrolledtext.ScrolledText(adwindow,height=150,width=850)
+            label.pack()
+            label.insert(tkinter.INSERT,x)
+            label.config(state=tkinter.DISABLED)
+            mydb.commit()
+            
 def BT():
     def submot():
         fname=name.get()
@@ -208,6 +212,7 @@ def BT():
     swindow=tkinter.Toplevel()
     tkinter.Label(swindow,text='Enter First Name:').grid(row=1)
     name=tkinter.Entry(swindow,font='Menlo')
+    name.focus_set()
     name.grid(row=1,column=2)
     
     tkinter.Label(swindow,text='Enter Surname:').grid(row=2)
@@ -218,7 +223,7 @@ def BT():
     z=tkinter.Entry(swindow,font='Menlo')
     z.grid(row=3,column=2)
     pnr=id_generator()
-    tkinter.Button(swindow,text='Submit',width=5,height=1,command=submot).grid(row=3, column=1)
+    tkinter.Button(swindow,text='Submit',width=5,height=1,command=submot).grid(row=6, column=2)
     
 def WC():
     def submot2():
@@ -242,23 +247,130 @@ def WC():
 def civilians():
     passengers1=tkinter.Toplevel()
     passengers1.title('Passenger Window')
-    passengers1.geometry('900x700')
+    passengers1.geometry('670x600+120+120')
     passengers1.configure(bg='sky blue')
     label=tkinter.Label(passengers1,text='Passengers',font='Menlo 50',bg='Sky Blue',bd=10 ,fg='Black').place(x=160,y=10)
     ad=tkinter.Button(passengers1,text='Arrivals and Departures',width=50,height=1,font='Terminal 20',command=AD).place(x=10,y=200)
     wc=tkinter.Button(passengers1,text='Web Check-in',width=50,height=1,font='Terminal 20',command=WC).place(x=10,y=350)
     bt=tkinter.Button(passengers1,text='Booking Tickets',width=50,height=1,font='Terminal 20',command=BT).place(x=10,y=500)
+    
+def status1():
+    import mysql.connector
+    from tabulate import tabulate
+    mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+    mycursor=mydb.cursor()
+    fwindow=tkinter.Toplevel()
+    fwindow.title('Seats Status')
+    fwindow.geometry('400x400+120+120')
+    z=(booking_tables[0])
+    sql=('SELECT * FROM '+ z)
+    
+    mycursor.execute(sql)
+    results = mycursor.fetchall()
+    x=(tabulate(results, headers=['Seat Number','Class','Booking Status'], tablefmt='psql'))
+    label=scrolledtext.ScrolledText(fwindow)
+    label.pack()
+    label.insert(tkinter.INSERT,x)
+    label.config(state=tkinter.DISABLED)
+    mydb.commit()
 
+def status2():
+    import mysql.connector
+    from tabulate import tabulate
+    mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+    mycursor=mydb.cursor()
+    fwindow=tkinter.Toplevel()
+    fwindow.title('Seats Status')
+    fwindow.geometry('400x400+120+120')
+    z=(booking_tables[1])
+    sql=('SELECT * FROM '+ z)
+    
+    mycursor.execute(sql)
+    results = mycursor.fetchall()
+    x=(tabulate(results, headers=['Seat Number','Class','Booking Status'], tablefmt='psql'))
+    label=scrolledtext.ScrolledText(fwindow)
+    label.pack()
+    label.insert(tkinter.INSERT,x)
+    label.config(state=tkinter.DISABLED)
+    mydb.commit() 
+    
+def status3():
+    import mysql.connector
+    from tabulate import tabulate
+    mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+    mycursor=mydb.cursor()
+    fwindow=tkinter.Toplevel()
+    fwindow.title('Seats Status')
+    fwindow.geometry('400x400+120+120')
+    z=(booking_tables[2])
+    sql=('SELECT * FROM '+ z)
+    
+    mycursor.execute(sql)
+    results = mycursor.fetchall()
+    x=(tabulate(results, headers=['Seat Number','Class','Booking Status'], tablefmt='psql'))
+    label=scrolledtext.ScrolledText(fwindow)
+    label.pack()
+    label.insert(tkinter.INSERT,x)
+    label.config(state=tkinter.DISABLED)
+    mydb.commit()
+
+def status4():
+    import mysql.connector
+    from tabulate import tabulate
+    mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+    mycursor=mydb.cursor()
+    fwindow=tkinter.Toplevel()
+    fwindow.title('Seats Status')
+    fwindow.geometry('400x400+120+120')
+    z=(booking_tables[3])
+    sql=('SELECT * FROM '+ z)
+    
+    mycursor.execute(sql)
+    results = mycursor.fetchall()
+    x=(tabulate(results, headers=['Seat Number','Class','Booking Status'], tablefmt='psql'))
+    label=scrolledtext.ScrolledText(fwindow)
+    label.pack()
+    label.insert(tkinter.INSERT,x)
+    label.config(state=tkinter.DISABLED)
+    mydb.commit()
+    
+def status5():
+    import mysql.connector
+    from tabulate import tabulate
+    mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
+    mycursor=mydb.cursor()
+    fwindow=tkinter.Toplevel()
+    fwindow.title('Seats Status')
+    fwindow.geometry('400x400+120+120')
+    z=(booking_tables[4])
+    sql=('SELECT * FROM '+ z)
+    mycursor.execute(sql)
+    results = mycursor.fetchall()
+    x=(tabulate(results, headers=['Seat Number','Class','Booking Status'], tablefmt='psql'))
+    label=scrolledtext.ScrolledText(fwindow)
+    label.pack()
+    label.insert(tkinter.INSERT,x)
+    label.config(state=tkinter.DISABLED)
+    mydb.commit()
+    
+    
+    
 def flight_seats():
-     import mysql.connector
-     from tabulate import tabulate
-     mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
-     mycursor=mydb.cursor()
+     
      seater=tkinter.Toplevel()
      seater.title('Flight Seats Status')
-     seater.geometry('600x600')
+     seater.geometry('675x700+120+120')
      seater.configure(bg='sky blue')
-     f1=tkinter.Button(passengers1,text=i[0],width=50,height=1,font='Terminal 20',command=AD).place(x=10,y=200)
+     temp=booking_tables[:]
+     for op in range(5):
+         temp[op]=temp[op].replace('_',' ')
+     label=tkinter.Label(seater,text='Flight Seats Status',font='Menlo 50',bd=10 ,fg='Black').place(x=40,y=10)
+     f1=tkinter.Button(seater,text=temp[0],width=50,height=1,font='Terminal 20',command=status1).place(x=10,y=200)
+     f2=tkinter.Button(seater,text=temp[1],width=50,height=1,font='Terminal 20',command=status2).place(x=10,y=300)
+     f3=tkinter.Button(seater,text=temp[2],width=50,height=1,font='Terminal 20',command=status3).place(x=10,y=400)
+     f4=tkinter.Button(seater,text=temp[3],width=50,height=1,font='Terminal 20',command=status4).place(x=10,y=500)
+     f5=tkinter.Button(seater,text=temp[4],width=50,height=1,font='Terminal 20',command=status5).place(x=10,y=600)
+     
          
          
 
@@ -268,18 +380,20 @@ def protection():
             def sea():
                 if h!='' or c!='':
                     swindow2=tkinter.Toplevel()
-                    
                     fn=h.get()
                     ln=c.get()
                     swindow.destroy()
-                    security.title('Passenger Search')
-                    security.geometry('400x200')
-                    sql2=("SELECT * FROM passengers WHERE First_name LIKE %s") #PARTIALLY WORKS
-                    mycursor.execute(sql2,(fn,))
+                    swindow2.title('Passenger Search')
+                    swindow2.geometry('550x200+120+120')
+                    sql2=("SELECT * FROM passengers WHERE First_name=" + "'"+fn+"'") 
+                    mycursor.execute(sql2)
                     results=mycursor.fetchall()
                     x=(tabulate(results,headers=['PNR','First Name','Last Name','Flight No','Checkin Status'], tablefmt='psql'))
-                    print(type(x))
-                    label=tkinter.Label(swindow2,text=x).pack()
+                    label=scrolledtext.ScrolledText(swindow2)
+                    label.pack()
+                    label.insert(tkinter.INSERT,x)
+                    label.config(state=tkinter.DISABLED)
+                    mydb.commit()
             import mysql.connector
             from tabulate import tabulate
             mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,database=database1,auth_plugin='mysql_native_password')
@@ -295,8 +409,9 @@ def protection():
             
             tkinter.Button(swindow,text='Submit',width=5,height=1, command=sea).grid(row=3, column=1)
             swindow.title('Search for a passenger')
-            swindow.geometry('400x200')
+            swindow.geometry('350x100')
             swindow.configure(bg='white')
+            swindow.resizable(0,0)
             
             
             
@@ -312,9 +427,13 @@ def protection():
             x=(tabulate(results, headers=['PNR','First Name','Last Name','Flight Number','Check-in Status'], tablefmt='psql'))
             adwindow=tkinter.Toplevel()
             adwindow.title('Passengers')
-            adwindow.geometry('400x200')
+            adwindow.geometry('600x400+120+120')
             adwindow.configure(bg='white')
-            label=tkinter.Label(adwindow,text=x).pack()
+            label=scrolledtext.ScrolledText(adwindow)
+            label.pack()
+            label.insert(tkinter.INSERT,x)
+            label.config(state=tkinter.DISABLED)
+            mydb.commit()
             
         
         passw=e.get()
@@ -322,9 +441,10 @@ def protection():
             security=tkinter.Toplevel()
             protect.destroy()
             security.title('Airport Personnel')
-            security.geometry('900x700')
+            security.geometry('700x700+120+120')
             security.configure(bg='sky blue')
-            label=tkinter.Label(security,text='A͢i͢r͢p͢o͢r͢t͢ ͢P͢e͢r͢s͢o͢n͢n͢e͢l͢',font='Menlo 50',bg='Sky Blue',bd=10 ,fg='Black').place(x=160,y=10)
+            security.resizable(0,0)
+            label=tkinter.Label(security,text='A͢i͢r͢p͢o͢r͢t͢ ͢P͢e͢r͢s͢o͢n͢n͢e͢l͢',font='Menlo 50',bg='Sky Blue',bd=10 ,fg='Black').place(x=90,y=10)
             ad=tkinter.Button(security,text='Arrivals and Departures',width=50,height=1,font='Terminal 20',command=AD).place(x=10,y=200)
             search=tkinter.Button(security,text='Search For A Passenger',width=50,height=1,font='Terminal 20',command=search).place(x=10,y=350)
             list_p=tkinter.Button(security,text='List of Passengers',width=50,height=1,font='Terminal 20',command=p_list).place(x=10,y=500)
@@ -334,16 +454,16 @@ def protection():
             protect.destroy()
     protect=tkinter.Toplevel()
     protect.title('Security')
-    protect.geometry('450x30')
+    protect.geometry('500x30+120+120')
     tkinter.Label(protect, text="Please enter the password to continue:").grid(row=1)
     e=tkinter.Entry(protect,show='*',font='Menlo')
     e.grid(row=1, column=2)
     tkinter.Button(protect,text='Submit',width=5,height=1, command=protection_command).grid(row=1, column=5)
 window=tkinter.Tk()
 window.title('Airport Management System')
-window.geometry('900x700')
+window.geometry('800x600+120+120')
 window.configure(bg='sky blue')
-label=tkinter.Label(window,text='A͢i͢r͢p͢o͢r͢t͢ ͢M͢a͢n͢a͢g͢e͢m͢e͢n͢t͢ ͢S͢y͢s͢t͢e͢m͢',font='Menlo 50',bg='Sky Blue',bd=10 ,fg='Black').place(x=10,y=10)
+label=tkinter.Label(window,text='A͢i͢r͢p͢o͢r͢t͢ ͢M͢a͢n͢a͢g͢e͢m͢e͢n͢t͢ ͢S͢y͢s͢t͢e͢m͢',font='Menlo 50',bg='Sky Blue',bd=10 ,fg='Black').place(x=5,y=10)
 passen=tkinter.Button(window,text='Passenger',width=20,height=5,font='Courier 30',command=civilians).place(x=200,y=150)
 security=tkinter.Button(window,text='Airport Personnel',width=20,height=5,font='Courier 30',command=protection).place(x=200,y=400)
 
@@ -353,5 +473,5 @@ mydb=mysql.connector.connect(host='localhost',user='root',passwd=password1,datab
 mycursor=mydb.cursor()
 for book3 in booking_tables:
     delete_query2='Drop table '+book3
-mycursor.execute(delete_query2)
+    mycursor.execute(delete_query2)
 mydb.commit()
