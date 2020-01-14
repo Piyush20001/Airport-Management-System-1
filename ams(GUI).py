@@ -184,7 +184,7 @@ def AD():
             sql = ("SELECT * FROM flights")
             mycursor.execute(sql)
             results = mycursor.fetchall()
-            x=(tabulate(results, headers=['Flight Name','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))
+            x=(tabulate(results, headers=['Flight Number','Flight Name','Source','Destination','Departure Time', 'Connecting Flight Available'], tablefmt='psql'))
             adwindow=tkinter.Toplevel()
             adwindow.title('Arrivals and Departures')
             adwindow.geometry('850x150+120+120')
